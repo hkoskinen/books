@@ -3,6 +3,7 @@
     "name": "Boooks",
     "slug": "Boooks",
     "privacy": "public",
+    "description": "Hackday ISBN reader",
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
@@ -24,6 +25,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "permissions": ["CAMERA"]
     }
   }
 }
