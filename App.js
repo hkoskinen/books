@@ -1,8 +1,26 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import { Permissions, BarCodeScanner } from "expo";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
-export default class App extends React.Component {
+import {
+  HomeScreen,
+  DetailsScreen,
+  ListScreen,
+  ScannerScreen
+} from "./components";
+
+const MainNavigator = createStackNavigator({
+  Home: { screen: HomeScreen },
+  Details: { screen: DetailsScreen },
+  List: { screen: ListScreen },
+  Scanner: { screen: ScannerScreen }
+});
+
+const App = createAppContainer(MainNavigator);
+export default App;
+
+class App2 extends React.Component {
   state = {
     hasCameraPermissions: null,
     scanned: false
@@ -33,26 +51,33 @@ export default class App extends React.Component {
     if (hasCameraPermissions === false) return <Text>No access to camera</Text>;
 
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "flex-end"
-        }}
-      >
+      <View style={styles.container}>
         <BarCodeScanner
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.ean13]}
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
+          style={styles.scanner}
         />
-
-        {scanned && (
-          <Button
-            title={"Tap to Scan Again"}
-            onPress={() => this.setState({ scanned: false })}
-          />
-        )}
+        <Button
+          title={"Scan again"}
+          onPress={() => this.setState({ scanned: false })}
+          style={styles.scanAgainButton}
+          color={"darkslateblue"}
+          disabled={!scanned}
+        />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  scanner: {
+    width: "90%",
+    height: 300
+  },
+  scanAgainButton: {}
+});
